@@ -2,6 +2,7 @@ from flask import Flask
 
 from .models import db, migrate
 from . import views
+from .admin import admin, StudentModelView
 
 
 def create_app():
@@ -14,6 +15,8 @@ def create_app():
     # База данных
     db.init_app(app)
     migrate.init_app(app, db)
+    admin.init_app(app)
+    admin.add_view(StudentModelView(models.Student, db.session))
 
     # Функции представления
     app.add_url_rule("/", view_func=views.index_page)
